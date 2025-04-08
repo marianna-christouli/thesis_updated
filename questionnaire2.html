@@ -54,7 +54,7 @@
                 
                 <!-- Ερώτηση 12 -->
                 <div class="question">
-                    <h2>Επιπτώσεις στη Θνησιμότητα, στη Νοσηρότητα και στην HRQoL, καθώς και στις Συνήθειες - Συμπεριφορές</h2>
+                    <h2>Επιπτώσεις στη Θνησιμότητα, στη Νοσηρότητα, στην HRQoL, καθώς και στις Συνήθειες - Συμπεριφορές</h2>
                     <p><b>Σύμφωνα με τα παρακάτω, επιλέξτε το επίπεδο ωριμότητας που αντιστοιχεί στην υπηρεσία:</b></p>
                     <p align="left">Οι οργανισμοί υγειονομικής περίθαλψης που παρέχουν υπηρεσίες τηλεϊατρικής πρέπει να εξετάσουν τον τρόπο εκτίμησης των επιπτώσεων των υπηρεσιών αυτών στη θνησιμότητα, τη νοσηρότητα και την ποιότητα ζωής του ανθρώπου, ενδεχομένως στο πλαίσιο παρόμοιων επιπτώσεων από άλλες καινοτόμες διαδικασίες που εισάγονται ή/και στο πλαίσιο τακτικής αξιολόγησης των συνολικών υπηρεσιών που παρέχουν. Εφόσον είναι δυνατόν, η μέτρηση αυτή πρέπει να ακολουθεί εθνικές ή περιφερειακές οδηγίες και να αποτελεί συστηματική διαδικασία συλλογής και αξιολόγησης στοιχείων. Τα συμπεράσματα και οι βελτιώσεις θα πρέπει φυσικά να ακολουθούν τις μετρήσεις αυτές</p>
                     <label><input type="radio" name="question12" value="1" required>Δεν πραγματοποιείται μέτρηση των επιπτώσεων της τηλε-υγείας.</label><br>
@@ -128,7 +128,10 @@
 
             let totalScore = 0;
             const answers = [];
+            let questionTexts = [];
             let answeredCount = 0;
+            let answerValue = [];
+
             // Περνάμε από όλες τις ερωτήσεις
             const questions = form.querySelectorAll('.question');
 
@@ -137,7 +140,11 @@
 
                 if (selectedOption) {
                     totalScore += parseInt(selectedOption.value);
+                    const questionText = question.querySelector('h2').innerText.trim();  // Αποθηκεύουμε την εκφώνηση της ερώτησης
+                    questionTexts.push(questionText);                     
                     answers.push(selectedOption.parentElement.textContent.trim());
+                    // Αποθηκεύουμε την τιμή (value) της επιλεγμένης απάντησης
+                    answerValue.push(selectedOption.value); 
                     answeredCount++;
                 }
             });
@@ -151,6 +158,8 @@
              // Αποθηκεύουμε το σκορ στο localStorage
             localStorage.setItem('score2', totalScore);
             localStorage.setItem('answers2', JSON.stringify(answers));
+            localStorage.setItem('questionsText2', JSON.stringify(questionTexts));
+            localStorage.setItem('answerValue2', JSON.stringify(answerValue));
 
             // Εμφάνιση του συνολικού σκορ
             resultContainer.innerHTML = `<h3>Το σκορ σας είναι: ${totalScore}</h3>`;

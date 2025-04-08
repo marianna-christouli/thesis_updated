@@ -120,7 +120,10 @@
 
             let totalScore = 0;
             const answers = [];
+            let questionTexts = [];
             let answeredCount = 0;
+            let answerValue = [];
+
             const questions = form.querySelectorAll('.question');
 
             questions.forEach(question => {
@@ -128,7 +131,11 @@
 
                 if (selectedOption) {
                 totalScore += parseInt(selectedOption.value);
+                const questionText = question.querySelector('h2').innerText.trim();  // Αποθηκεύουμε την εκφώνηση της ερώτησης
+                questionTexts.push(questionText);                  
                 answers.push(selectedOption.parentElement.textContent.trim());
+                // Αποθηκεύουμε την τιμή (value) της επιλεγμένης απάντησης
+                answerValue.push(selectedOption.value);                 
                 answeredCount++;
             }
         });
@@ -142,6 +149,8 @@
         // Αποθηκεύουμε το σκορ στο localStorage
         localStorage.setItem('score3', totalScore);
         localStorage.setItem('answers3', JSON.stringify(answers));
+        localStorage.setItem('questionsText3', JSON.stringify(questionTexts));
+        localStorage.setItem('answerValue3', JSON.stringify(answerValue));
 
         // Εμφάνιση του συνολικού σκορ
         resultContainer.innerHTML = `<h3>Το σκορ σας είναι: ${totalScore}</h3>`;

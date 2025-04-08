@@ -1,3 +1,6 @@
+/*import { jsPDF } from "jspdf";
+import "jspdf-autotable"; DEN MPORO ALLO ME THN BLAKEIA AYTH*/
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const registerForm = document.getElementById("registerForm");
@@ -363,17 +366,51 @@ document.addEventListener("DOMContentLoaded", function () {
     function exportToCSV() {
         const data = getExportData();
         const csvData = [];
-    
-        // Επικεφαλίδες
-        csvData.push("ΧΡΗΣΤΗΣ,ΑΝΘΡΩΠΟΚΕΝΤΡΙΚΟΤΗΤΑ,ΚΛΙΝΙΚΗ ΑΠΟΤΕΛΕΣΜΑΤΙΚΟΤΗΤΑ,ΑΣΦΑΛΕΙΑ - ΑΠΟΡΡΗΤΟ,ΣΥΝΟΛΟ");
-    
+        
+        // Επικεφαλίδες: Προσθέτουμε τις ερωτήσεις
+        let headers = "ΧΡΗΣΤΗΣ,ΥΠΗΡΕΣΙΑ,ΑΝΘΡΩΠΟΚΕΝΤΡΙΚΟΤΗΤΑ,ΚΛΙΝΙΚΗ ΑΠΟΤΕΛΕΣΜΑΤΙΚΟΤΗΤΑ,ΑΣΦΑΛΕΙΑ - ΑΠΟΡΡΗΤΟ,ΣΥΝΟΛΟ";
+        for (let i = 1; i <= 16; i++) {
+            headers += `,ΕΡΩΤΗΣΗ ${i}`;
+        }
+        csvData.push(headers);
+        
         data.forEach(user => {
             const totalScore = (parseInt(user.score1) || 0) + (parseInt(user.score2) || 0) + (parseInt(user.score3) || 0);
             if (totalScore > 0) {
-                csvData.push(`${user.username},${user.score1},${user.score2},${user.score3},${totalScore}`);
+                let row = `${user.username},${user.organizationName},${user.score1},${user.score2},${user.score3},${totalScore}`;
+               
+                // Ανάκτηση του answerValue από το localStorage και μετατροπή σε πίνακα
+                let answerValue1 = [];
+                let answerValue2 = [];
+                let answerValue3 = [];
+
+                try {
+                    answerValue1 = JSON.parse(localStorage.getItem('answerValue1')) || [];
+                    answerValue2 = JSON.parse(localStorage.getItem('answerValue2')) || [];
+                    answerValue3 = JSON.parse(localStorage.getItem('answerValue3')) || [];
+                } catch (e) {
+                    console.error('Σφάλμα κατά την ανάκτηση του answerValue:', e);
+                }
+            
+                // Προσθήκη των απαντήσεων από το answerValue1 (9 απαντήσεις)
+                for (let i = 0; i < 9; i++) {
+                    row += `,${answerValue1[i] || ''}`; // Αν δεν υπάρχει απάντηση, αφήνουμε κενό
+                }
+
+                // Προσθήκη των απαντήσεων από το answerValue2 (4 απαντήσεις)
+                for (let i = 0; i < 4; i++) {
+                    row += `,${answerValue2[i] || ''}`; // Αν δεν υπάρχει απάντηση, αφήνουμε κενό
+                }
+
+                // Προσθήκη των απαντήσεων από το answerValue3 (3 απαντήσεις)
+                for (let i = 0; i < 3; i++) {
+                    row += `,${answerValue3[i] || ''}`; // Αν δεν υπάρχει απάντηση, αφήνουμε κενό
+                }
+                    
+                csvData.push(row);
             }
         });
-    
+        
         const csvContent = "\uFEFF" + csvData.join('\n'); // Προσθέτουμε το BOM
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
@@ -382,7 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
         link.click();
     }
 
-    async function exportToPDF() {
+    function exportToPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
     
@@ -417,8 +454,8 @@ document.addEventListener("DOMContentLoaded", function () {
     
         // Αποθήκευση του αρχείου PDF
         doc.save("results.pdf");
-    }
-
+    }   
+        
     function exportToTXT() {
         // Βεβαιωθείτε ότι η συνάρτηση getExportData() επιστρέφει δεδομένα
         const data = getExportData(); 
@@ -453,10 +490,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.appendChild(link); // Προσθέτουμε το link στο DOM
         link.click();  // Εκκινεί το download
         document.body.removeChild(link); // Αφαιρούμε το link από το DOM μετά το download
-    }
+    } 
 
     window.exportToCSV = exportToCSV;
     window.exportToPDF = exportToPDF;
     window.exportToTXT = exportToTXT;
-
 });

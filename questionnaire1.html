@@ -199,6 +199,9 @@
             let totalScore = 0;
             const answers = [];
             let answeredCount = 0;
+            let questionTexts = [];
+            let answerValue = [];  // Πίνακας για αποθήκευση των τιμών των απαντήσεων
+
             // Περνάμε από όλες τις ερωτήσεις
             const questions = form.querySelectorAll('.question');
 
@@ -207,7 +210,11 @@
 
                 if (selectedOption) {
                     totalScore += parseInt(selectedOption.value);
+                    const questionText = question.querySelector('h2').innerText.trim();  // Αποθηκεύουμε την εκφώνηση της ερώτησης
+                    questionTexts.push(questionText); 
                     answers.push(selectedOption.parentElement.textContent.trim());
+                    // Αποθηκεύουμε την τιμή (value) της επιλεγμένης απάντησης
+                    answerValue.push(selectedOption.value);                   
                     answeredCount++;
                 }
             });
@@ -221,6 +228,8 @@
             // Αποθήκευση του σκορ στο localStorage
             localStorage.setItem('score1', totalScore);
             localStorage.setItem('answers1', JSON.stringify(answers));
+            localStorage.setItem('questionsText1', JSON.stringify(questionTexts));
+            localStorage.setItem('answerValue1', JSON.stringify(answerValue));
 
             // Εμφάνιση του συνολικού σκορ
             resultContainer.innerHTML = `<h3>Το σκορ σας είναι: ${totalScore}</h3>`;
