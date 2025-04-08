@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Τελικό Σκορ και Απαντήσεις</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">Τελικό Σκορ και Απαντήσεις</div>
+            <div class="nav-links">
+                <a href="#" id="logoutButton" class="btn">Αποσύνδεση</a>
+            </div>
+        </div>
+
+        <h1>Ανά Ερωτηματολόγιο</h1>
+        <ul id="individualScores" style="list-style: none; padding-left: 0;"></ul>
+        
+        <h1>Τελικό Σκορ</h1>  
+        <p id="totalScore"></p>
+
+        <h2>Πίνακας Αποτελεσμάτων</h2>
+        <table border="1" cellspacing="0" cellpadding="8" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <thead style="background-color: #f2f2f2;">
+                <tr>
+                    <th>Κατηγορία</th>
+                    <th>Χαμηλό Επίπεδο Ωριμότητας</th>
+                    <th>Μέτριο Επίπεδο Ωριμότητας</th>
+                    <th>Υψηλό Επίπεδο Ωριμότητας</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ανθρωποκεντρικότητα</td>
+                    <td>0 - 14</td>
+                    <td>15 - 29</td>
+                    <td>30 - 45</td>
+                </tr>
+                <tr>
+                    <td>Κλινική Αποτελεσματικότητα</td>
+                    <td>0 - 6</td>
+                    <td>7 - 13</td>
+                    <td>14 - 20</td>
+                </tr>
+                <tr>
+                    <td>Ασφάλεια - Απόρρητο</td>
+                    <td>0 - 4</td>
+                    <td>5 - 9</td>
+                    <td>10 - 15</td>
+                </tr>
+
+                <tr>
+                    <td><b>ΣΥΝΟΛΙΚΑ</b></td>
+                    <td><b>0 - 24</b></td>
+                    <td><b>27 - 51</b></td>
+                    <td><b>54 - 80</b></td>
+                </tr>                
+            </tbody>
+        </table>
+
+        
+        <h2>Αναλυτικές Απαντήσεις</h2>
+        
+        <div id="answersDisplay"></div>
+
+        <div class="export-buttons">
+            <button onclick="exportToCSV()">Εξαγωγή σε CSV</button>
+            <button onclick="exportToPDF()">Εξαγωγή σε PDF</button>
+            <button onclick="exportToTXT()">Εξαγωγή σε TXT</button>
+
+        </div>
+    </div>
+
+  <script>
+        window.onload = function() {
+            
+            const score1 = parseInt(localStorage.getItem('score1')) || 0;
+            const score2 = parseInt(localStorage.getItem('score2')) || 0;
+            const score3 = parseInt(localStorage.getItem('score3')) || 0;
+
+            const totalScore = score1 + score2 + score3;
+        // Συνάρτηση για τον καθορισμό επιπέδου και χρώματος
+        function getLevel(score, ranges) {
+            if (score <= ranges.low) {
+                return { label: "Χαμηλό", color: "red" };
+            } else if (score <= ranges.medium) {
+                return { label: "Μέτριο", color: "orange" };
+            } else {
+                return { label: "Υψηλό", color: "green" };
+            }
+        }
+
+        const level1 = getLevel(score1, { low: 14, medium: 29 });
+        const level2 = getLevel(score2, { low: 6, medium: 13 });
+        const level3 = getLevel(score3, { low: 4, medium: 9 });
+
+        // Εμφάνιση ανά ενότητα
+        individualScores.innerHTML = `
+            <li style="background-color: ${level1.color}; padding: 10px; border-radius: 8px; margin-bottom: 10px; color: white;">
+                <b>Ανθρωποκεντρικότητα:</b> ${score1} 
+                <span>(${level1.label})</span>
+            </li>
+            <li style="background-color: ${level2.color}; padding: 10px; border-radius: 8px; margin-bottom: 10px; color: white;">
+                <b>Κλινική Αποτελεσματικότητα:</b> ${score2} 
+                <span>(${level2.label})</span>
+            </li>
+            <li style="background-color: ${level3.color}; padding: 10px; border-radius: 8px; margin-bottom: 10px; color: white;">
+                <b>Ασφάλεια - Απόρρητο:</b> ${score3} 
+                <span>(${level3.label})</span>
+            </li>
+        `;   
+            document.getElementById('totalScore').innerText = "Το συνολικό σκορ σας είναι: " + totalScore;
+
+            // Εμφάνιση των αναλυτικών απαντήσεων
+            const answersDisplay = document.getElementById('answersDisplay');
+            let allAnswersHTML = '';
+            
+            for (let i = 1; i <= 3; i++) {
+                const answers = JSON.parse(localStorage.getItem(`answers${i}`)) || [];
+                allAnswersHTML += `<h3>Ερωτηματολόγιο ${i}</h3><ul>`;
+                answers.forEach(answer => {
+                    allAnswersHTML += `<li>Απάντηση: ${answer}</li>`;
+                });
+                allAnswersHTML += '</ul>';
+            }
+
+            answersDisplay.innerHTML = allAnswersHTML;
+        };
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

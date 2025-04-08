@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Εγγραφή - Εκκρεμής Εγκεκριμένη ή Απορριφθείσα</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">.....</div>
+        <div class="nav-links">
+            <a href="index.html" class="btn">Αρχική</a>
+            <a href="login.html" class="btn">Σύνδεση</a>
+        </div>
+    </nav>
+
+    <!-- Container -->
+    <div class="container">
+        <div class="hero">
+            <h2>Η εγγραφή σας είναι υπό έγκριση</h2>
+            <p>Αναμονή για την έγκριση ή την απόρριψη από τον διαχειριστή.</p>
+        </div>
+
+        <div class="purpose">
+            <h3>Πληροφορίες</h3>
+            <p>Η εγγραφή σας είναι υπό έγκριση. Όταν εγκριθεί ή απορριφθεί, θα ενημερωθείτε μέσω ειδοποίησης. Παρακαλούμε να είστε υπομονετικοί.</p>
+        </div>
+
+        <div class="form-container">
+            <h2>Ενημέρωση</h2>
+            <p>Αν έχετε ερωτήσεις ή ανησυχίες, παρακαλούμε επικοινωνήστε με τον διαχειριστή.</p>
+            <p class="switch-page left">
+            Θα βρείτε την φόρμα επικοινωνίας  <a href="register.html">εδώ</a>.
+            </p>
+        </div>
+    </div>
+    <p id="confirmationMessage" style="display:none; color:green; font-weight:bold; margin-top:10px;"></p>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!window.location.href.includes("pending.html")) return;
+
+            const currentUserName = localStorage.getItem("currentUser");
+            if (!currentUserName) return;
+
+            const users = JSON.parse(localStorage.getItem("users")) || [];
+
+            // Βρίσκουμε τον χρήστη που είναι συνδεδεμένος και έχει αποθηκευμένη κατάσταση
+            const currentUserObject = users.find(u => u.username === currentUserName && u.status);
+
+            if (!currentUserObject) return;
+
+            let messageToShow = "";
+            let redirectUrl = "";
+            let showRejectionOptions = false;
+
+            switch (currentUserObject.status) {
+                case "Σε αναμονή":
+                    messageToShow = "Η αίτησή σας είναι σε αναμονή έγκρισης.";
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                    break;
+                case "Εγκρίθηκε":
+                    messageToShow = "Η εγγραφή σας εγκρίθηκε από τον διαχειριστή!";
+                    redirectUrl = "login.html";
+                    break;
+                case "Απορρίφθηκε":
+                    messageToShow = "Η εγγραφή σας απορρίφθηκε από τον διαχειριστή!";
+                    showRejectionOptions = true;
+                    break;
+                default:
+                    return;
+            }
+
+            if (messageToShow) {
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("notification");
+                messageDiv.innerHTML = messageToShow;
+
+                const closeButton = document.createElement("button");
+                closeButton.innerText = "Κλείσιμο";
+                closeButton.classList.add("close-button");
+                closeButton.onclick = function () {
+                    document.body.removeChild(messageDiv);
+                    if (redirectUrl) {
+                        window.location.href = redirectUrl;
+                    }
+                };
+
+                messageDiv.appendChild(closeButton);
+
+                if (showRejectionOptions) {
+                    const optionsDiv = document.createElement("div");
+                    optionsDiv.classList.add("rejection-options");
+
+                    const homeButton = document.createElement("button");
+                    homeButton.innerText = "Επιστροφή στην αρχική";
+                    homeButton.classList.add("home-button");
+                    homeButton.onclick = function () {
+                        window.location.href = "index.html";
+                    };
+
+                    const contactButton = document.createElement("button");
+                    contactButton.innerText = "Επικοινωνία με τον διαχειριστή";
+                    contactButton.classList.add("contact-button");
+                    contactButton.onclick = function () {
+                        window.location.href = "contact.html";
+                    };
+
+                    optionsDiv.appendChild(homeButton);
+                    optionsDiv.appendChild(contactButton);
+                    messageDiv.appendChild(optionsDiv);
+                }
+
+                document.body.appendChild(messageDiv);
+            }
+        });
+      </script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>ΣΥΝΔΕΣΗ ΧΡΗΣΤΗ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Σύνδεση</h2>
+
+        <form id="loginForm" autocomplete="off">
+            <input type="text" id="loginUsername" name="loginUsername" placeholder="Όνομα Χρήστη" required>
+            <div class="password-container">
+                <input type="password" id="loginPassword" name="loginPassword" placeholder="Κωδικός" required>  
+                <button type="button" id="togglePassword">👁️</button>
+            </div>
+            <button type="submit">Σύνδεση</button>
+        </form>
+
+        <p class="switch-page center">
+            Δεν έχετε λογαριασμό; <a href="register.html">Εγγραφείτε εδώ</a>
+        </p>
+    </div>
+    <script>
+        const togglePasswordButton = document.getElementById("togglePassword");
+        const passwordField = document.getElementById("loginPassword");
+
+        togglePasswordButton.addEventListener("click", function () {
+            // Αν το type είναι "password", το κάνουμε "text" για να δούμε τον κωδικό
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

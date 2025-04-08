@@ -1,0 +1,650 @@
+/* Variables and Global Styles */
+:root {
+    --dark-blue: #2c3e50;       /* Σκούρο μπλε για κύρια στοιχεία */
+    --light-blue: #3498db;      /* Απαλό μπλε για hover/δευτερεύοντα στοιχεία */
+    --off-white: #ecf0f1;       /* Φως για φόντο */
+    --beige: #bdc3c7;           /* Απαλό γκρι για ελαφρές επιφάνειες */
+    --font-family: 'Helvetica Neue', Arial, sans-serif;
+    --transition: 0.3s;
+    --border-radius: 8px;
+    --box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--off-white);
+    color: var(--dark-blue);
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+}
+
+/* Reset */
+* {
+    box-sizing: border-box;
+}
+
+/* Navbar */
+.navbar {
+    width: 100%;
+    padding: 15px 30px; /* Σταθερό padding για το navbar */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--off-white);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: var(--box-shadow);
+    transition: box-shadow var(--transition);
+    height: 70px; /* Σταθερό ύψος για το navbar */
+}
+
+.navbar:hover {
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    color: var(--dark-blue);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.nav-links .btn {
+    color: var(--dark-blue);
+    text-decoration: none;
+    padding: 8px 18px;
+    background: transparent;
+    border: 1px solid var(--dark-blue);
+    border-radius: var(--border-radius);
+    transition: color var(--transition), background-color var(--transition), transform var(--transition);
+}
+
+.nav-links .btn:hover {
+    background: var(--dark-blue);
+    color: var(--off-white);
+    transform: scale(1.05);
+}
+
+/* Adjustments for Navbar items */
+.navbar .logo, .navbar .nav-links {
+    display: flex;
+    align-items: center; /* Ευθυγράμμιση των στοιχείων στο navbar */
+    height: 100%;
+}
+/* Container */
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--off-white);
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    padding-top: 90px; /* Space for fixed navbar */
+}
+
+/* Hero Section */
+.hero {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 28px;
+    color: var(--dark-blue);
+    margin-bottom: 15px;
+    transition: color var(--transition);
+}
+
+.hero h2:hover {
+    color: var(--light-blue);
+}
+
+.hero p {
+    font-size: 16px;
+    color: var(--dark-blue);
+    margin-bottom: 30px;
+}
+
+/* Primary Button */
+.btn.primary {
+    background: var(--light-blue);
+    color: white;
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    display: inline-block;
+    transition: background-color var(--transition), transform var(--transition);
+    z-index: 1000; /* Βεβαιωθείτε ότι είναι πάνω από άλλα στοιχεία */
+    pointer-events: auto; /* Βεβαιωθείτε ότι είναι ενεργό */
+}
+
+.btn.primary:hover {
+    background: var(--dark-blue);
+    transform: translateY(-3px);
+}
+
+.btn.primary:active {
+    transform: translateY(1px);
+}
+
+/* Purpose Section (Card) */
+.purpose {
+    max-width: 800px;
+    background: var(--beige);
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: box-shadow var(--transition);
+}
+
+.purpose:hover {
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.purpose h3 {
+    font-size: 20px;
+    color: var(--dark-blue);
+    margin-bottom: 15px;
+}
+
+.purpose p {
+    font-size: 16px;
+    color: var(--dark-blue);
+}
+
+/* Form Container */
+.form-container {
+    background-color: var(--beige);
+    width: 100%;
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: box-shadow var(--transition);
+}
+
+.form-container:hover {
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.form-container h2 {
+    font-size: 24px;
+    color: var(--dark-blue);
+    margin-bottom: 20px;
+}
+
+/* Form Elements */
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 2px 0;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--dark-blue);
+    background-color: var(--off-white);
+    color: var(--dark-blue);
+    font-size: 16px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--light-blue);
+    box-shadow: 0px 0px 8px rgba(52, 152, 219, 0.5);
+    outline: none;
+}
+
+/* Button Styles */
+button {
+    padding: auto; 
+    background-color: transparent; /* Αφαίρεση του φόντου */
+    color: var(--dark-blue); /* Χρώμα κειμένου όπως το navigation bar */
+    border: 1px solid var(--dark-blue); /* Πρόσθεση border όπως στο navigation bar */
+    border-radius: var(--border-radius); /* Στρογγυλεμένες γωνίες */
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition), transform var(--transition);
+}
+
+
+button:hover {
+    background-color: var(--dark-blue); /* Φόντο όταν το κουμπί είναι hover */
+    color: var(--off-white); /* Χρώμα κειμένου όταν το κουμπί είναι hover */
+    transform: scale(1.05); /* Ελαφριά μεγέθυνση του κουμπιού */
+}
+
+button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* Switch Page Link */
+.switch-page {
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.switch-page.center{
+    text-align: center;
+}
+
+.switch-page.left{
+    text-align: left;
+}
+
+.switch-page a {
+    color: var(--light-blue);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+.switch-page a:hover {
+    color: var(--dark-blue);
+}
+
+/* Responsive adjustments for larger screens */
+@media (min-width: 768px) {
+    .form-container {
+        padding: 40px;
+    }
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+/* Εφαρμόζουμε padding και σωστή στοίχιση ανάλογα με το περιεχόμενο */
+.table th, .table td {
+    padding: 12px 18px;  /* Αύξηση padding για καλύτερη ευκρίνεια */
+    text-align: center; /* Για κείμενο, κεντραρισμένο */
+    vertical-align: middle; /* Κέντρο στο ύψος για καλύτερη ευθυγράμμιση */
+    border: 1px solid var(--dark-blue);
+}
+
+/* Ρύθμιση κεφαλίδων (th) */
+.table th {
+    background-color: var(--beige);
+    color: var(--dark-blue);
+    font-weight: bold;
+    text-align: center; /* Κεντραρισμένο κείμενο για τις κεφαλίδες */
+}
+
+/* Ρύθμιση δεδομένων (td) */
+.table td {
+    background-color: var(--off-white);
+    text-align: left; /* Κεντραρισμένο κείμενο και στα δεδομένα */
+}
+
+/* Για αριθμητικά δεδομένα, αν θέλεις να τα ευθυγραμμίζεις δεξιά */
+.table td.number {
+    text-align: right;
+}
+
+/* Προαιρετικά: Εναλλαγή χρωμάτων για κάθε ζευγάρι γραμμών */
+.table tr:nth-child(even) {
+    background-color: var(--beige);  /* Εναλλακτική γραμμή */
+}
+
+/* Εφέ hover για τις γραμμές */
+.table tr:hover {
+    background-color: rgba(52, 152, 219, 0.1); /* Ελαφρύ hover effect */
+}
+
+/* Results Table */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+/* Ρύθμιση κεφαλίδων (th) */
+.results-table th, .results-table td {
+    padding: 12px 18px;
+    text-align: center; /* Κεντραρισμένο κείμενο για κεφαλίδες και δεδομένα */
+    vertical-align: middle; /* Κέντρο στο ύψος για καλύτερη ευθυγράμμιση */
+    border: 1px solid var(--dark-blue);
+}
+
+/* Ρύθμιση κεφαλίδων (th) */
+.results-table th {
+    background-color: var(--beige);
+    color: var(--dark-blue);
+    font-weight: bold;
+}
+
+/* Ρύθμιση δεδομένων (td) */
+.results-table td {
+    background-color: var(--off-white);
+}
+
+/* Για αριθμητικά δεδομένα (αν χρειαστεί) */
+.results-table td.number {
+    text-align: right;
+}
+
+/* Εναλλαγή χρωμάτων για κάθε ζευγάρι γραμμών */
+.results-table tr:nth-child(even) {
+    background-color: var(--beige);  /* Εναλλακτική γραμμή */
+}
+
+/* Εφέ hover για τις γραμμές */
+.results-table tr:hover {
+    background-color: rgba(52, 152, 219, 0.1); /* Ελαφρύ hover effect */
+}
+
+/* Στυλ για τα κουμπιά εξαγωγής */
+.export-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.export-buttons button {
+    padding: 8px 18px;  /* Σα μικρότερο padding όπως το navbar */
+    background: transparent;  /* Ίδιο με τα κουμπιά του navbar */
+    color: var(--dark-blue);  /* Χρώμα κειμένου όπως το navbar */
+    border: 1px solid var(--dark-blue);  /* Όπως στο navbar */
+    border-radius: var(--border-radius);  /* Στρογγυλεμένες γωνίες */
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition), transform var(--transition);
+}
+
+/* Hover εφέ για τα κουμπιά εξαγωγής */
+.export-buttons button:hover {
+    background-color: var(--dark-blue);  /* Όπως στο navbar */
+    color: var(--off-white);  /* Χρώμα κειμένου όταν είναι hover, όπως στο navbar */
+    transform: scale(1.05);
+}
+
+/* Εφέ όταν το κουμπί είναι ενεργό */
+.export-buttons button:active {
+    transform: translateY(1px);
+}
+
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050; /* Μεγαλύτερο από το navbar για να εμφανίζεται από πάνω */
+    padding-top: 90px; /* Δίνει χώρο για το navbar */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    max-width: 70%;
+    max-height: 70%;
+    overflow-y: auto;
+    transition: transform var(--transition);
+    position: relative; /* Βοηθάει στη θέση του κουμπιού κλεισίματος */
+}
+
+.modal-content:hover {
+    transform: translateY(5px);
+}
+
+/* Κουμπί κλεισίματος (X) */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1100; /* Υψηλότερο από το modal περιεχόμενο */
+    color: var(--dark-blue);
+}
+
+.close-btn:hover {
+    color: var(--light-blue); /* Εφέ hover για το κουμπί */
+}
+
+/* Για να διασφαλίσουμε ότι το modal δεν θα επηρεάσει το navbar */
+.navbar {
+    z-index: 1000; /* Κρατάμε το navbar κάτω από το modal */
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffe681;
+    color: #000;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100; 
+}
+
+/* Close Button for Notification */
+.close-button {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #ce3929;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color var(--transition);
+}
+
+.close-button:hover {
+    background-color: #c0392b;
+}
+
+
+/* Στυλ για την φόρμα ερωτήσεων */
+form {
+    display: flex;
+    flex-direction: column; /* Στοιχίζει κάθε ερώτηση κάθετα */
+    gap: 20px; /* Απόσταση μεταξύ των ερωτήσεων */
+}
+
+.question {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Διαχωρισμός μεταξύ των ερωτήσεων */
+}
+
+.question label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    gap: 10px; /* Χώρος μεταξύ κουμπιού και κειμένου */
+    width: auto;
+}
+
+.question input[type="radio"] {
+    margin: 0;
+    transform: scale(1.2); /* Μεγαλώνουμε το κουμπί για να είναι πιο ευδιάκριτο */
+    width: 20px;
+}
+#info-container {
+    background-color: var(--beige); /* Χρησιμοποιούμε το ίδιο υπόβαθρο όπως το .purpose */
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: box-shadow var(--transition);
+    display: block; /* Όχι πλέον κρυφό */
+    text-align: left;
+    color: var(--dark-blue); /* Χρώμα κειμένου */
+}
+
+#info-container p {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+#info-container p:first-child {
+    font-weight: bold; /* Έντονη γραφή για την πρώτη παράγραφο */
+}
+
+#info-container:hover {
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.15); /* Προσθέτουμε εφέ hover */
+}
+
+#info-container ul {
+    list-style-type: disc;
+    padding-left: 20px; /* Απόσταση για καλύτερη εμφάνιση */
+}
+
+#info-container ul li {
+    font-size: 16px;
+    margin-bottom: 5px; /* Ελαφριά απόσταση ανάμεσα στις λίστες */
+}
+
+#info-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px; /* Μέγεθος του κουμπιού */
+    height: 30px; /* Ίδιο ύψος με πλάτος για να γίνει στρογγυλό */
+    border: 2px solid #9ceb74; /* Χρώμα πλαισίου */
+    border-radius: 50%; /* Στρογγυλοποίηση */
+    font-size: 18px; /* Μέγεθος του "i" */
+    color: #9ceb74; /* Χρώμα του κειμένου */
+    font-weight: bold; /* Έντονη γραφή */
+    cursor: pointer; /* Για να δείχνει ότι είναι κλικαρίσιμο */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Εφέ για hover */
+}
+
+#info-icon:hover {
+    background-color: #9ceb74; /* Φόντο μπλε όταν είναι hover */
+    color: white; /* Χρώμα κειμένου λευκό όταν είναι hover */
+}
+
+/* Τρέχουσα ερώτηση - απαλό μπλε με καλύτερη αντίθεση */
+.question.current-question {
+    background-color: #e6f2fb; /* Απαλό γαλάζιο */
+    border-left: 4px solid #3498db; /* Κανονικό μπλε */
+    padding-left: 12px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.25); /* Ελαφρύτερο shadow */
+    transition: background-color var(--transition), box-shadow var(--transition);
+}
+
+/* Επόμενη ερώτηση - πιο έντονο πράσινο */
+.question.next-question {
+    background-color: #e9f9ef; /* Απαλό πράσινο */
+    border-left: 4px solid #2ecc71; /* Πράσινο */
+    padding-left: 12px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.25); /* Ελαφρύτερο shadow */
+    transition: background-color var(--transition), box-shadow var(--transition);
+}
+
+.password-container {
+    position: relative; /* Προσθέτουμε relative position για να τοποθετήσουμε το κουμπί */
+    width: 100%; /* Διασφαλίζει ότι το πεδίο κωδικού και το κουμπί έχουν το ίδιο πλάτος */
+}
+
+#loginPassword {
+    width: 100%; /* Ορίζουμε το πλάτος του πεδίου κωδικού */
+    padding-right: 35px; /* Δημιουργούμε κενό για το κουμπί */
+}
+
+#togglePassword {
+    position: absolute; /* Κάνουμε το κουμπί απόλυτο σε σχέση με το parent div */
+    right: 10px; /* Τοποθετούμε το κουμπί λίγο πιο δεξιά */
+    top: 50%;
+    transform: translateY(-50%); /* Κεντράρει το κουμπί κάθετα */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #888;
+    padding: 0;
+}
+
+/* Μειώνουμε το margin του τίτλου */
+.form-container h2 {
+    font-size: 24px;
+    color: var(--dark-blue);
+    margin-bottom: 10px; /* Από 20px → 10px */
+}
+
+/* Μειώνουμε τα κενά ανάμεσα στα πεδία μόνο στο contactForm */
+#contactForm input,
+#contactForm select,
+#contactForm textarea {
+    margin: 4px 0; 
+}
+
+/* Αν έχεις wrapper form με gap */
+#contactForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; 
+}
+
+.accordion {
+    max-width: 800px;
+    margin: 30px auto;
+    background: var(--beige);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+  }
+  
+  .accordion-item {
+    border-bottom: 1px solid var(--dark-blue);
+  }
+  
+  .accordion-header {
+    padding: 16px;
+    background-color: var(--off-white);
+    color: var(--dark-blue);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color var(--transition);
+    text-align: center;
+  }
+  
+  .accordion-header:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+  }
+  
+  .accordion-body {
+    padding: 0 16px;
+    max-height: 0;
+    overflow: hidden;
+    background-color: var(--beige);
+    color: var(--dark-blue);
+    font-size: 14px;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+  
+  .accordion-item.active .accordion-body {
+    padding: 16px;
+    max-height: 300px; /* Μπορείς να το ρυθμίσεις ανάλογα */
+  }
+  

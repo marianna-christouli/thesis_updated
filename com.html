@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Πίνακας Επικοινωνίας</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Μηνύματα</div>
+        <div class="nav-links">
+            <a href="admin.html" class="btn">Διαχείριση Χρηστών</a>
+            <a href="responses.html" class="btn">Αποτελέσματα</a>
+            <a href="com.html" class="btn">Μηνύματα</a>
+            <a href="#" id="logoutButton" class="btn">Αποσύνδεση</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Αιτήματα Επικοινωνίας</h2>
+
+        <table class="table" id="contactTable">
+            <thead>
+                <tr>
+                    <th>Όνομα</th>
+                    <th>Email</th>
+                    <th>Θέμα</th>
+                    <th>Μήνυμα</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Τα δεδομένα θα προστεθούν εδώ -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Φορτώνουμε τα δεδομένα από το localStorage
+        const contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+
+        // Επιλέγουμε το tbody του πίνακα
+        const contactTable = document.getElementById("contactTable").getElementsByTagName("tbody")[0];
+
+        // Προσθέτουμε κάθε επαφή στον πίνακα
+        contacts.forEach(contact => {
+            const row = document.createElement("tr");
+
+            const nameCell = document.createElement("td");
+            nameCell.textContent = contact.name;
+            row.appendChild(nameCell);
+
+            const emailCell = document.createElement("td");
+            emailCell.textContent = contact.email;
+            row.appendChild(emailCell);
+
+            const subjectCell = document.createElement("td");
+            subjectCell.textContent = contact.subject;
+            row.appendChild(subjectCell);
+
+            const messageCell = document.createElement("td");
+            messageCell.textContent = contact.message;
+            row.appendChild(messageCell);
+
+            // Προσθέτουμε τη γραμμή στον πίνακα
+            contactTable.appendChild(row);
+        });
+    </script>
+    <script src="script.js" defer></script>
+</body>
+</html>

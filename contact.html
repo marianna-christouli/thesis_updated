@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Επικοινωνία</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Επικοινωνία</div>
+        <div class="nav-links">
+            <a href="index.html" class="btn">Αρχική</a>
+            <a href="faq.html" class="btn">FAQ</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="form-container">
+            <h2>Φόρμα Επικοινωνίας</h2>
+            <form id="contactForm" autocomplete="off">
+                <label for="name">Όνομα:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="subject">Θέμα:</label>
+                <input type="text" id="subject" name="subject" required>
+                
+                <label for="message">Μήνυμα:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                
+                <button type="submit">Υποβολή</button>
+            </form>
+            <p class="switch-page center">Ή επιστρέψτε στην <a href="index.html">Αρχική σελίδα</a></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
