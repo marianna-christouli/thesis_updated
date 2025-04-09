@@ -174,8 +174,15 @@
         const answers2 = JSON.parse(localStorage.getItem('answers2')) || [];
         const answers3 = JSON.parse(localStorage.getItem('answers3')) || [];
 
+        const answerValue1 = JSON.parse(localStorage.getItem('answerValue1')) || [];
+        const answerValue2 = JSON.parse(localStorage.getItem('answerValue2')) || [];
+        const answerValue3 = JSON.parse(localStorage.getItem('answerValue3')) || [];
+
         const allAnswers = [...answers1, ...answers2, ...answers3];
+        const allAnswerValues = [...answerValue1, ...answerValue2, ...answerValue3];
+
         localStorage.setItem(`answers_${username}`, JSON.stringify(allAnswers));
+        localStorage.setItem(`answerValues_${username}`, JSON.stringify(allAnswerValues));
         let users = JSON.parse(localStorage.getItem('users')) || [];
         const existingUserIndex = users.findIndex(user => user.username === username);
 
@@ -185,6 +192,7 @@
             users[existingUserIndex].score2 = score2;
             users[existingUserIndex].score3 = score3;
             users[existingUserIndex].answers = [...answers1, ...answers2, ...answers3];
+            users[existingUserIndex].answerValues = [...answerValue1, ...answerValue2, ...answerValue3]; 
         } else {
             // Αν δεν υπάρχει, προσθέτουμε νέο χρήστη
             users.push({
@@ -192,7 +200,8 @@
                 score1: score1,
                 score2: score2,
                 score3: score3,
-             answers: [...answers1, ...answers2, ...answers3]
+                answers: [...answers1, ...answers2, ...answers3],
+                answerValues: [...answerValue1, ...answerValue2, ...answerValue3]
             });
         }
 

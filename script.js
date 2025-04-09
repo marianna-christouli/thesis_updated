@@ -44,8 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 setTimeout(() => {
                     window.location.href = "admin.html";
                 }, 100);
-            } //else if (user && user.password === password) {
-                else if (user && user.password === btoa(password)){
+            } //else if (user && user.password === password) {else if (user && user.password === btoa(password))
+            else if (user && user.password === password){
                 localStorage.setItem("currentUser", username);
                 setTimeout(() => {
                     window.location.href = "instructions.html";
@@ -366,131 +366,111 @@ document.addEventListener("DOMContentLoaded", function () {
     function exportToCSV() {
         const data = getExportData();
         const csvData = [];
-        
-        // Επικεφαλίδες: Προσθέτουμε τις ερωτήσεις
+
         let headers = "ΧΡΗΣΤΗΣ,ΥΠΗΡΕΣΙΑ,ΑΝΘΡΩΠΟΚΕΝΤΡΙΚΟΤΗΤΑ,ΚΛΙΝΙΚΗ ΑΠΟΤΕΛΕΣΜΑΤΙΚΟΤΗΤΑ,ΑΣΦΑΛΕΙΑ - ΑΠΟΡΡΗΤΟ,ΣΥΝΟΛΟ";
         for (let i = 1; i <= 16; i++) {
             headers += `,ΕΡΩΤΗΣΗ ${i}`;
         }
         csvData.push(headers);
-        
+
         data.forEach(user => {
             const totalScore = (parseInt(user.score1) || 0) + (parseInt(user.score2) || 0) + (parseInt(user.score3) || 0);
             if (totalScore > 0) {
                 let row = `${user.username},${user.organizationName},${user.score1},${user.score2},${user.score3},${totalScore}`;
-               
-                // Ανάκτηση του answerValue από το localStorage και μετατροπή σε πίνακα
-                let answerValue1 = [];
-                let answerValue2 = [];
-                let answerValue3 = [];
+                const answerValues = user.answerValues || [];
 
-                try {
-                    answerValue1 = JSON.parse(localStorage.getItem('answerValue1')) || [];
-                    answerValue2 = JSON.parse(localStorage.getItem('answerValue2')) || [];
-                    answerValue3 = JSON.parse(localStorage.getItem('answerValue3')) || [];
-                } catch (e) {
-                    console.error('Σφάλμα κατά την ανάκτηση του answerValue:', e);
-                }
-            
-                // Προσθήκη των απαντήσεων από το answerValue1 (9 απαντήσεις)
-                for (let i = 0; i < 9; i++) {
-                    row += `,${answerValue1[i] || ''}`; // Αν δεν υπάρχει απάντηση, αφήνουμε κενό
+                for (let i = 0; i < 16; i++) {
+                    row += `,${answerValues[i] || ''}`;
                 }
 
-                // Προσθήκη των απαντήσεων από το answerValue2 (4 απαντήσεις)
-                for (let i = 0; i < 4; i++) {
-                    row += `,${answerValue2[i] || ''}`; // Αν δεν υπάρχει απάντηση, αφήνουμε κενό
-                }
-
-                // Προσθήκη των απαντήσεων από το answerValue3 (3 απαντήσεις)
-                for (let i = 0; i < 3; i++) {
-                    row += `,${answerValue3[i] || ''}`; // Αν δεν υπάρχει απάντηση, αφήνουμε κενό
-                }
-                    
                 csvData.push(row);
             }
         });
-        
-        const csvContent = "\uFEFF" + csvData.join('\n'); // Προσθέτουμε το BOM
+
+        const csvContent = "\uFEFF" + csvData.join('\n');
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = 'results.csv';
         link.click();
     }
-
     function exportToPDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
     
-        // Βάλε την γραμματοσειρά Open Sans που έχεις μετατρέψει σε Base64
-        const fontBase64 = 'C:\Users\Admin\Downloads\encoded-20250331173644'; // Εδώ βάλε το Base64 αρχείο της γραμματοσειράς
+        let headers = ["ΧΡΗΣΤΗΣ", "ΥΠΗΡΕΣΙΑ", "ΑΝΘΡΩΠΟΚΕΝΤΡΙΚΟΤΗΤΑ", "ΚΛΙΝΙΚΗ ΑΠΟΤΕΛΕΣΜΑΤΙΚΟΤΗΤΑ", "ΑΣΦΑΛΕΙΑ - ΑΠΟΡΡΗΤΟ", "ΣΥΝΟΛΟ"];
+        for (let i = 1; i <= 16; i++) {
+            headers.push(`ΕΡΩΤΗΣΗ ${i}`);
+        }
     
-        // Προσθήκη της γραμματοσειράς στο VFS
-        doc.addFileToVFS("OpenSans-Regular.ttf", fontBase64);
-        doc.addFont("OpenSans-Regular.ttf", "OpenSans", "normal");
-        doc.setFont("OpenSans");
-    
-        let yOffset = 10;
-    
-        // Επικεφαλίδες
-        doc.text("ΧΡΗΣΤΗΣ | ΑΝΘΡΩΠΟΚΕΝΤΡΙΚΟΤΗΤΑ | ΚΛΙΝΙΚΗ ΑΠΟΤΕΛΕΣΜΑΤΙΚΟΤΗΤΑ | ΑΣΦΑΛΕΙΑ - ΑΠΟΡΡΗΤΟ | ΣΥΝΟΛΟ", 10, yOffset);
-        yOffset += 10;
-    
-        // Λήψη δεδομένων για εξαγωγή PDF
         const data = getExportData();
+        const pdfData = [];
+    
         data.forEach(user => {
             const totalScore = (parseInt(user.score1) || 0) + (parseInt(user.score2) || 0) + (parseInt(user.score3) || 0);
             if (totalScore > 0) {
-                const rowText = `${user.username} | ${user.score1} | ${user.score2} | ${user.score3} | ${totalScore}`;
-                doc.text(rowText, 10, yOffset);
-                yOffset += 10;
-                if (yOffset > 280) {
-                    doc.addPage();
-                    yOffset = 10;
+                let row = [
+                    user.username,
+                    user.organizationName,
+                    user.score1,
+                    user.score2,
+                    user.score3,
+                    totalScore
+                ];
+    
+                const answerValues = user.answerValues || [];
+                for (let i = 0; i < 16; i++) {
+                    row.push(answerValues[i] || '');
                 }
+    
+                pdfData.push(row);
             }
         });
     
-        // Αποθήκευση του αρχείου PDF
-        doc.save("results.pdf");
-    }   
-        
-    function exportToTXT() {
-        // Βεβαιωθείτε ότι η συνάρτηση getExportData() επιστρέφει δεδομένα
-        const data = getExportData(); 
+        doc.autoTable({
+            head: [headers],
+            body: pdfData,
+            startY: 20
+        });
     
-        // Αν δεν υπάρχουν δεδομένα, σταματάμε την εκτέλεση της συνάρτησης
+        doc.save('results.pdf');
+    }
+
+    function exportToTXT() {
+        const data = getExportData();
+    
         if (!data || data.length === 0) {
             console.error("No data to export.");
             return;
         }
     
-        // Δημιουργία του περιεχομένου του αρχείου .txt
-        let textContent = "ΧΡΗΣΤΗΣ | ΑΝΘΡΩΠΟΚΕΝΤΡΙΚΟΤΗΤΑ | ΚΛΙΝΙΚΗ ΑΠΟΤΕΛΕΣΜΑΤΙΚΟΤΗΤΑ | ΑΣΦΑΛΕΙΑ - ΑΠΟΡΡΗΤΟ | ΣΥΝΟΛΟ\n";
-        
-        // Προσθήκη των δεδομένων στις γραμμές του κειμένου
+        let textContent = "ΧΡΗΣΤΗΣ | ΥΠΗΡΕΣΙΑ | ΑΝΘΡΩΠΟΚΕΝΤΡΙΚΟΤΗΤΑ | ΚΛΙΝΙΚΗ ΑΠΟΤΕΛΕΣΜΑΤΙΚΟΤΗΤΑ | ΑΣΦΑΛΕΙΑ - ΑΠΟΡΡΗΤΟ | ΣΥΝΟΛΟ";
+        for (let i = 1; i <= 16; i++) {
+            textContent += ` | ΕΡΩΤΗΣΗ ${i}`;
+        }
+        textContent += "\n";
+    
         data.forEach(user => {
             const totalScore = (parseInt(user.score1) || 0) + (parseInt(user.score2) || 0) + (parseInt(user.score3) || 0);
             if (totalScore > 0) {
-                const rowText = `${user.username} | ${user.score1} | ${user.score2} | ${user.score3} | ${totalScore}`;
+                let rowText = `${user.username} | ${user.organizationName} | ${user.score1} | ${user.score2} | ${user.score3} | ${totalScore}`;
+                const answerValues = user.answerValues || [];
+    
+                for (let i = 0; i < 16; i++) {
+                    rowText += ` | ${answerValues[i] || ''}`;
+                }
+    
                 textContent += rowText + "\n";
             }
         });
     
-        // Δημιουργία του Blob για το αρχείο .txt
-        const blob = new Blob([textContent], { type: "text/plain;charset=utf-8" });
-    
-        // Δημιουργία του link για την εκκίνηση της λήψης
-        const link = document.createElement("a");
+        const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8;' });
+        const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = "results.txt";  // Το όνομα του αρχείου που θα κατέβει
+        link.download = 'results.txt';
+        link.click();
+    }
     
-        // Αντικαθιστούμε την ενέργεια με την πραγματική κλήση της ενέργειας λήψης
-        document.body.appendChild(link); // Προσθέτουμε το link στο DOM
-        link.click();  // Εκκινεί το download
-        document.body.removeChild(link); // Αφαιρούμε το link από το DOM μετά το download
-    } 
 
     window.exportToCSV = exportToCSV;
     window.exportToPDF = exportToPDF;
